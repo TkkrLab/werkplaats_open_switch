@@ -1,0 +1,56 @@
+===Werkplaats===
+tkkrlab/werkplaats/io/input/0 <-- knop
+tkkrlab/werkplaats/state <-- 0=closed, 1=open
+
+tkkrlab/test/spacestate
+
+
+=TkkrLab open/dicht=
+mosquitto is used to test the connection (https://mosquitto.org/). We have a node-red server to proces the input/output to turn things on/off.
+
+======
+/* werkplaats knop */
+mosquitto_pub -h server -p 1883 -t tkkrlab/werkplaats/io/input -m 0 -d
+mosquitto_pub -h server -p 1883 -t tkkrlab/werkplaats/io/input -m 1 -d
+
+//display waarde met datumtijd
+mosquitto_sub -h server -p 1883 -t tkkrlab/werkplaats/io/input -F '%I %p'
+
+
+/* open werkplaats */
+mosquitto_pub -h server -p 1883 -t tkkrlab/werkplaats/state -m 1 -d
+
+/* sluit werkplaats */
+mosquitto_pub -h server -p 1883 -t tkkrlab/werkplaats/state -m 0 -d
+
+//subscribe to topics
+mosquitto_sub -h server -p 1883 -t tkkrlab/werkplaats/state  -d
+mosquitto_sub -h server -p 1883 -t tkkrlab/spacestate -d
+
+
+/* kijk naar volume */
+mosquitto_sub -h server -p 1883 -t tkkrlab/mpd/volume
+
+/* zet volume op 50 *?/
+mosquitto_pub -h server -p 1883 -t tkkrlab/mpd/volume/50
+
+==ESP32 Dev==
+We have some "DOIT ESP32 DEVKIT V1" kits, that I use for this project. 
+devkitc
+
+ESP32_core_board_v2 or also know as ESP32 devkitc-v2
+
+https://docs.espressif.com/projects/esp-idf/en/latest/esp32/hw-reference/esp32/get-started-devkitc-v2.html
+
+Control of the LEDS
+http://fastled.io/
+
+
+==For Mac==
+Mac_OSX_VCP_Driver
+Drive didn't instal with installer, so I had to copy it manually. In short 
+ sudo cp -r /Volumes/Silicon\ Labs\ VCP\ Driver\ Install\ Disk/Install\ VCP210x\ Driver.app/Contents/Resources/SiLabsUSBDriver.kext /Library/Extensions/
+ sudo kextload /Library/Extensions/SiLabsUSBDriver.kext
+
+See https://www.silabs.com/community/interface/forum.topic.html/problem_installingcp210vcpdriverinmacosxhi-tLeO post by user _brant.
+
