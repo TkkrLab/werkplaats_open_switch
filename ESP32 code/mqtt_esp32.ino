@@ -44,7 +44,7 @@ const int first_buttonPin = 17;
 const int second_buttonPin = 16; 
 
 const char* ssid = "www.tkkrlab.nl";
-const char* password = "hax4or2the2paxor3";
+const char* password = "*";
 const char* mqtt_server = "server";
 
 WiFiClient espClient;
